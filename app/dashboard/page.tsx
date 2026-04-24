@@ -28,9 +28,28 @@ import {
 
 type Tab = "client" | "freelancer" | "wallet";
 
+import { getWalletAddress } from "@/lib/stellar/wallet";
+import { releaseMilestone } from "@/lib/stellar/actions";
+import { useToast } from "@/components/ui/toast";
+
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<Tab>("client");
   const [stakeAmount, setStakeAmount] = useState("");
+  const [address, setAddress] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  React.useEffect(() => {
+    getWalletAddress().then(setAddress);
+  }, []);
+
+  const handleRelease = async (jobId: string, index: number) => {
+    try {
+      await releaseMilestone(jobId, index);
+      toast("Milestone released successfully!", "success");
+    } catch (err: any) {
+      toast("Failed to release milestone", "error");
+    }
+  };
 
   const NavItem = ({ id, icon: Icon, label }: { id: Tab, icon: any, label: string }) => (
     <button
@@ -66,7 +85,7 @@ export default function DashboardPage() {
               <div>
                 <h1 className="text-4xl md:text-5xl font-syne font-black tracking-tight mb-3">Control Center</h1>
                 <p className="text-lg text-white/40 font-medium">
-                  Welcome back, <span className="text-white font-mono bg-white/5 px-2 py-0.5 rounded">GD2...P9L1</span>
+                  Welcome back, <span className="text-white font-mono bg-white/5 px-2 py-0.5 rounded">{address ? `${address.slice(0, 4)}...${address.slice(-4)}` : "Guest User"}</span>
                 </p>
               </div>
               <div className="hidden md:flex glass p-2 border-white/5 rounded-[2.5rem] shadow-xl">
@@ -123,11 +142,22 @@ export default function DashboardPage() {
                             </td>
                             <td className="py-8 text-sm text-white/60 font-medium">{job.next}</td>
                             <td className="py-8 text-right">
-                              <Link href={`/jobs/${i + 1}`}>
-                                <button className="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-cyan/30 hover:text-cyan transition-all">
-                                  <ExternalLink size={18} />
-                                </button>
-                              </Link>
+                              <div className="flex justify-end gap-3">
+                                {job.status !== "0% Paid" && (
+                                  <GlowButton 
+                                    variant="secondary" 
+                                    className="px-3 py-1.5 text-[10px] uppercase tracking-widest h-auto"
+                                    onClick={() => handleRelease(job.title, 0)}
+                                  >
+                                    Release
+                                  </GlowButton>
+                                )}
+                                <Link href={`/jobs/${i + 1}`}>
+                                  <button className="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-cyan/30 hover:text-cyan transition-all">
+                                    <ExternalLink size={18} />
+                                  </button>
+                                </Link>
+                              </div>
                             </td>
                           </tr>
                         ))}

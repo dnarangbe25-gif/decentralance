@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { JobCard, Job } from "@/components/features/job-card";
+import { MOCK_JOBS, Job } from "@/lib/stellar/data";
+import { JobCard } from "@/components/features/job-card";
 import { JobSkeleton } from "@/components/ui/glass-skeleton";
 import { GlowButton } from "@/components/ui/glow-button";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -14,21 +15,6 @@ import {
   ArrowLeft
 } from "lucide-react";
 import Link from "next/link";
-
-const MOCK_JOBS: Job[] = [
-  { id: "1", title: "Senior Soroban Smart Contract Dev", client: "GBH7...4X3Z", postedDate: "2h ago", category: "Dev", budget: 15000, deadline: "4d 12h", bidCount: 8, status: "Open" },
-  { id: "2", title: "Web3 Brand Identity Design", client: "GCO2...R9Q1", postedDate: "5h ago", category: "Design", budget: 4500, deadline: "2d 0h", bidCount: 12, status: "Open" },
-  { id: "3", title: "Marketplace Technical Writer", client: "GA5X...K2M4", postedDate: "1d ago", category: "Writing", budget: 2000, deadline: "1w 2d", bidCount: 4, status: "In Progress" },
-  { id: "4", title: "Stellar Horizon Integration", client: "GD3S...L0P8", postedDate: "1d ago", category: "Dev", budget: 8000, deadline: "6h 30m", bidCount: 6, status: "Open" },
-  { id: "5", title: "NFT Collection Landing Page", client: "GB6E...W1Y9", postedDate: "2d ago", category: "Dev", budget: 3200, deadline: "3d 8h", bidCount: 15, status: "Open" },
-  { id: "6", title: "Crypto Newsletter Strategy", client: "GCV9...B5S2", postedDate: "2d ago", category: "Marketing", budget: 1500, deadline: "2w 0d", bidCount: 2, status: "Open" },
-  { id: "7", title: "Rust Audit for Escrow Contract", client: "GDM1...H7N5", postedDate: "3d ago", category: "Dev", budget: 25000, deadline: "5d 0h", bidCount: 3, status: "Open" },
-  { id: "8", title: "UX Audit for DEX Interface", client: "GAK4...J8R2", postedDate: "3d ago", category: "Design", budget: 5000, deadline: "1d 18h", bidCount: 9, status: "Open" },
-  { id: "9", title: "Social Media Manager (Web3)", client: "GBR2...F4G1", postedDate: "4d ago", category: "Marketing", budget: 1200, deadline: "3w 4d", bidCount: 22, status: "Open" },
-  { id: "10", title: "Whitepaper Translation (JP)", client: "GCL8...X2V9", postedDate: "5d ago", category: "Writing", budget: 3000, deadline: "1w 0d", bidCount: 5, status: "Completed" },
-  { id: "11", title: "Custom Soroban Token Bridge", client: "GDE3...S9M1", postedDate: "1w ago", category: "Dev", budget: 12000, deadline: "2d 4h", bidCount: 7, status: "Open" },
-  { id: "12", title: "3D Illustration for Hero Section", client: "GAW1...T5Y3", postedDate: "1w ago", category: "Design", budget: 2800, deadline: "12h 45m", bidCount: 11, status: "Open" },
-];
 
 const CATEGORIES = ["All", "Design", "Dev", "Writing", "Marketing", "Other"];
 
