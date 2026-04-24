@@ -27,3 +27,9 @@ export async function releaseMilestone(jobId: string, milestoneIndex: number) {
   await new Promise(resolve => setTimeout(resolve, 1800));
   return { success: true, txHash: "0x..." };
 }
+
+export async function createJob(data: { title: string, category: string, budget: number, description: string, deadline: string }) {
+  console.log("Creating job on-chain:", data);
+  await new Promise(resolve => setTimeout(resolve, 2500));
+  return { success: true, id: Math.random().toString(36).substring(7), txHash: "0x..." };
+}

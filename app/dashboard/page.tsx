@@ -89,7 +89,7 @@ export default function DashboardPage() {
                 <GlassCard className="p-8 border-white/5 shadow-2xl overflow-hidden relative">
                   <div className="flex justify-between items-center mb-10">
                     <h3 className="text-2xl font-syne tracking-tight">Active Listings</h3>
-                    <Link href="/jobs">
+                    <Link href="/jobs/new">
                       <GlowButton variant="secondary" className="px-4 py-2 text-xs">Post New Listing</GlowButton>
                     </Link>
                   </div>

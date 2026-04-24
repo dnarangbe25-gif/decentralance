@@ -69,9 +69,11 @@ export default function JobBoard() {
           <h1 className="text-4xl md:text-6xl mb-3 tracking-tight font-syne">Browse Jobs</h1>
           <p className="text-lg text-white/40 font-medium">Discover 100+ opportunities in the Stellar ecosystem.</p>
         </div>
-        <GlowButton className="px-8 py-3.5">
-          <Plus size={20} className="mr-1" /> Post a Job
-        </GlowButton>
+        <Link href="/jobs/new">
+          <GlowButton className="px-8 py-3.5">
+            <Plus size={20} className="mr-1" /> Post a Job
+          </GlowButton>
+        </Link>
       </div>
 
       {/* Filters & Search Section */}
