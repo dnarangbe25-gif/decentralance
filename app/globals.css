@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-syne: var(--font-syne), "Syne", sans-serif;
+  --font-dm-sans: var(--font-dm-sans), "DM Sans", sans-serif;
+
+  --color-navy: #050a1a;
+  --color-cyan: #00e5ff;
+  --color-violet: #7c3aed;
+  --color-amber: #ffbf00;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --animate-mesh: mesh 15s ease infinite;
+
+  @keyframes mesh {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-20px) translateX(10px); }
+    100% { transform: translateY(0px) translateX(0px); }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+}
+
+@layer base {
+  :root {
+    --background: 224 71% 4%;
+    --foreground: 0 0% 100%;
+    --card: 224 71% 6%;
+    --card-foreground: 0 0% 100%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 186 100% 50%;
+    --primary-foreground: 224 71% 4%;
+    --secondary: 262 83% 58%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 224 71% 12%;
+    --muted-foreground: 224 10% 70%;
+    --accent: 186 100% 50%;
+    --accent-foreground: 224 71% 4%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 224 71% 12%;
+    --input: 224 71% 12%;
+    --ring: 186 100% 50%;
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-navy text-foreground font-dm-sans selection:bg-cyan/30 selection:text-cyan;
+    scroll-behavior: smooth;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-syne font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl;
+  }
+  
+  .glass-glow:hover {
+    @apply border-cyan/30 shadow-[0_0_25px_rgba(0,229,255,0.1)];
+  }
+
+  .mesh-bg {
+    background: linear-gradient(-45deg, #050a1a, #0f172a, #1e1b4b, #050a1a);
+    background-size: 400% 400%;
+    animation: mesh 20s ease infinite;
+  }
+
+  .orb {
+    @apply absolute rounded-full blur-[100px] -z-10 animate-[float_10s_ease-in-out_infinite];
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-navy;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-cyan/20 rounded-full hover:bg-cyan/40 transition-colors;
+  }
+}
