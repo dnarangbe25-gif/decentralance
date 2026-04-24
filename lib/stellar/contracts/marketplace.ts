@@ -20,10 +20,22 @@ export interface JobState {
 }
 
 export class MarketplaceContract {
-  private contract: Contract;
+  private contract: Contract | null = null;
 
   constructor() {
-    this.contract = new Contract(MARKETPLACE_CONTRACT_ID);
+    if (MARKETPLACE_CONTRACT_ID) {
+      this.contract = new Contract(MARKETPLACE_CONTRACT_ID);
+    }
+  }
+
+  private getContract() {
+    if (!this.contract) {
+      if (!MARKETPLACE_CONTRACT_ID) {
+        throw new Error("Marketplace Contract ID not configured. Please set NEXT_PUBLIC_MARKETPLACE_ID in your environment.");
+      }
+      this.contract = new Contract(MARKETPLACE_CONTRACT_ID);
+    }
+    return this.contract;
   }
 
   /**
@@ -40,7 +52,7 @@ export class MarketplaceContract {
       fee: "1000",
       networkPassphrase: NETWORK_PASSPHRASE,
     })
-      .addOperation(this.contract.call(functionName, ...args))
+      .addOperation(this.getContract().call(functionName, ...args))
       .setTimeout(60)
       .build();
 
@@ -87,6 +99,8 @@ export class MarketplaceContract {
   }
 
   async getJob(jobId: bigint): Promise<JobState | null> {
+    if (!MARKETPLACE_CONTRACT_ID) return null;
+    
     const result = await stellarClient.server.getEvents({
       startLedger: 0,
       filters: [{

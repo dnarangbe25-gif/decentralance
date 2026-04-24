@@ -12,10 +12,22 @@ import { signTx } from "../wallet";
 const LANCE_TOKEN_ID = process.env.NEXT_PUBLIC_LANCE_TOKEN_ID || "";
 
 export class LanceTokenContract {
-  private contract: Contract;
+  private contract: Contract | null = null;
 
   constructor() {
-    this.contract = new Contract(LANCE_TOKEN_ID);
+    if (LANCE_TOKEN_ID) {
+      this.contract = new Contract(LANCE_TOKEN_ID);
+    }
+  }
+
+  private getContract() {
+    if (!this.contract) {
+      if (!LANCE_TOKEN_ID) {
+        throw new Error("LANCE Token Contract ID not configured.");
+      }
+      this.contract = new Contract(LANCE_TOKEN_ID);
+    }
+    return this.contract;
   }
 
   async getBalance(address: string): Promise<bigint> {
@@ -31,7 +43,7 @@ export class LanceTokenContract {
       fee: "1000",
       networkPassphrase: NETWORK_PASSPHRASE,
     })
-      .addOperation(this.contract.call("stake", nativeToScVal(amount, { type: "i128" })))
+      .addOperation(this.getContract().call("stake", nativeToScVal(amount, { type: "i128" })))
       .setTimeout(30)
       .build();
 
