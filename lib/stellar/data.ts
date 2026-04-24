@@ -9,7 +9,7 @@ export interface Job {
   description: string;
   postedDate: string;
   status: "Open" | "In Progress" | "Completed" | "Disputed";
-  bidsCount: number;
+  bidCount: number;
 }
 
 export const MOCK_JOBS: Job[] = [
@@ -23,7 +23,7 @@ export const MOCK_JOBS: Job[] = [
     reputation: 98,
     postedDate: "2h ago",
     status: "Open",
-    bidsCount: 8,
+    bidCount: 8,
     description: "Build a custom escrow logic for our upcoming NFT marketplace on Stellar."
   },
   {
@@ -36,7 +36,7 @@ export const MOCK_JOBS: Job[] = [
     reputation: 95,
     postedDate: "5h ago",
     status: "Open",
-    bidsCount: 3,
+    bidCount: 3,
     description: "Create a modern cosmic-themed design system for a decentralized finance dashboard."
   },
   {
@@ -49,7 +49,7 @@ export const MOCK_JOBS: Job[] = [
     reputation: 99,
     postedDate: "1d ago",
     status: "Open",
-    bidsCount: 12,
+    bidCount: 12,
     description: "Write clear, concise documentation for a new Soroban-based cross-chain bridge SDK."
   },
   {
@@ -62,7 +62,7 @@ export const MOCK_JOBS: Job[] = [
     reputation: 100,
     postedDate: "3h ago",
     status: "Open",
-    bidsCount: 5,
+    bidCount: 5,
     description: "Perform a deep-dive security audit on a set of DeFi lending protocols."
   }
 ];

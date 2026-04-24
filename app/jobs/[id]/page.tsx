@@ -42,7 +42,7 @@ We are looking for an experienced Rust developer to build a custom Escrow logic 
   deadline: "4d 12h",
   category: "Dev",
   postedDate: "2h ago",
-  bidsCount: 8,
+  bidCount: 8,
   status: "Open" as JobStatus,
   milestones: [
     { name: "Contract Architecture & Setup", amount: 3000, status: "Released" },
@@ -209,7 +209,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             <section className="animate-in fade-in slide-in-from-bottom-12 duration-1000">
               <div className="flex justify-between items-end mb-10">
                 <div>
-                  <h3 className="text-2xl font-syne mb-2">Proposals ({MOCK_JOB.bidsCount})</h3>
+                  <h3 className="text-2xl font-syne mb-2">Proposals ({MOCK_JOB.bidCount})</h3>
                   <p className="text-white/40 text-sm">Review incoming bids from verified freelancers.</p>
                 </div>
                 <div className="flex items-center gap-2 glass px-4 py-2 border-white/5 rounded-xl">
@@ -296,7 +296,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   { label: "Est. Budget", val: `${MOCK_JOB.budget.toLocaleString()} XLM`, icon: <CircleDollarSign size={16} />, color: "text-cyan" },
                   { label: "Deadline", val: MOCK_JOB.deadline, icon: <Clock size={16} /> },
                   { label: "Posted On", val: MOCK_JOB.postedDate, icon: <Calendar size={16} /> },
-                  { label: "Proposals", val: MOCK_JOB.bidsCount, icon: <Briefcase size={16} /> }
+                  { label: "Proposals", val: MOCK_JOB.bidCount, icon: <Briefcase size={16} /> }
                 ].map((item, i) => (
                   <div key={i} className="flex justify-between items-center">
                     <div className="flex items-center gap-3 text-white/30">
