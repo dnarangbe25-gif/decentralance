@@ -91,10 +91,10 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     }
   };
 
-  const handleAcceptBid = async (bidId: string) => {
-    setAcceptingBidId(bidId);
+  const handleAcceptBid = async (freelancer: string) => {
+    setAcceptingBidId(freelancer);
     try {
-      await acceptBid(resolvedParams.id, bidId);
+      await acceptBid(resolvedParams.id, freelancer);
       toast("Bid accepted! Escrow initialized.", "success");
     } catch (err: any) {
       toast("Failed to accept bid", "error");
@@ -223,8 +223,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                     key={bid.id} 
                     bid={bid} 
                     isOwner={isOwner} 
-                    onAccept={handleAcceptBid}
-                    isAccepting={acceptingBidId === bid.id}
+                    onAccept={() => handleAcceptBid(bid.freelancer)}
+                    isAccepting={acceptingBidId === bid.freelancer}
                   />
                 ))}
               </div>

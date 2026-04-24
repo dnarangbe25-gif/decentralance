@@ -29,49 +29,58 @@ export class MarketplaceContract {
   /**
    * Helper to build and sign a contract invocation.
    */
-  private async invoke(functionName: string, args: any[] = []) {
-    const address = await Address.fromString(args[0]?.toString() || ""); // Mock first arg as source
-    const account = await stellarClient.getAccount(address.toString());
+  private async invoke(sourceAddress: string, functionName: string, args: any[] = []) {
+    if (!MARKETPLACE_CONTRACT_ID) {
+      throw new Error("Marketplace Contract ID not configured");
+    }
+
+    const account = await stellarClient.getAccount(sourceAddress);
 
     const tx = new TransactionBuilder(account, {
       fee: "1000",
       networkPassphrase: NETWORK_PASSPHRASE,
     })
       .addOperation(this.contract.call(functionName, ...args))
-      .setTimeout(30)
+      .setTimeout(60)
       .build();
 
     const signedXdr = await signTx(tx.toXDR());
     const signedTx = TransactionBuilder.fromXDR(signedXdr, NETWORK_PASSPHRASE);
     
-    return await stellarClient.submitTransaction(signedTx as any);
+    const result = await stellarClient.submitTransaction(signedTx as any);
+    return result;
   }
 
-  async postJob(title: string, description: string, budget: bigint) {
-    return await this.invoke("post_job", [
+  async postJob(client: string, title: string, description: string, budget: bigint, deadline: number) {
+    return await this.invoke(client, "post_job", [
+      Address.fromString(client).toScVal(),
       nativeToScVal(title),
       nativeToScVal(description),
-      nativeToScVal(budget, { type: "i128" })
+      nativeToScVal(budget, { type: "i128" }),
+      nativeToScVal(deadline, { type: "u64" })
     ]);
   }
 
-  async submitBid(jobId: bigint, amount: bigint, proposal: string) {
-    return await this.invoke("submit_bid", [
+  async submitBid(freelancer: string, jobId: number, amount: bigint, proposal: string) {
+    return await this.invoke(freelancer, "submit_bid", [
+      Address.fromString(freelancer).toScVal(),
       nativeToScVal(jobId, { type: "u64" }),
       nativeToScVal(amount, { type: "i128" }),
       nativeToScVal(proposal)
     ]);
   }
 
-  async acceptBid(jobId: bigint, freelancer: string) {
-    return await this.invoke("accept_bid", [
+  async acceptBid(client: string, jobId: number, freelancer: string, token: string, milestoneCount: number) {
+    return await this.invoke(client, "accept_bid", [
       nativeToScVal(jobId, { type: "u64" }),
-      Address.fromString(freelancer).toScVal()
+      Address.fromString(freelancer).toScVal(),
+      Address.fromString(token).toScVal(),
+      nativeToScVal(milestoneCount, { type: "u32" })
     ]);
   }
 
-  async completeMilestone(jobId: bigint, milestoneIndex: number) {
-    return await this.invoke("complete_milestone", [
+  async completeMilestone(client: string, jobId: number, milestoneIndex: number) {
+    return await this.invoke(client, "complete_milestone", [
       nativeToScVal(jobId, { type: "u64" }),
       nativeToScVal(milestoneIndex, { type: "u32" })
     ]);
