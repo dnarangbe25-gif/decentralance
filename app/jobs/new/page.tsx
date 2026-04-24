@@ -47,8 +47,9 @@ export default function PostJobPage() {
         ...formData,
         budget: Number(formData.budget)
       });
+      console.log("[STELLAR] Job Creation Transaction Result:", result);
       toast("Job posted successfully! Escrow initialized.", "success");
-      router.push(`/jobs/${result.id}`);
+      router.push("/jobs");
     } catch (err: any) {
       toast(err.message || "Failed to post job", "error");
     } finally {
